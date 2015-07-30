@@ -28,32 +28,36 @@ namespace WrappedString;
 
 class WrappedString {
 	/** @var string */
-	protected $before;
+	protected $value;
 
 	/** @var string */
-	protected $content;
+	protected $prefix;
 
 	/** @var string */
-	protected $after;
+	protected $suffix;
 
 	/**
-	 * @param string $before
-	 * @param string $content
-	 * @param string $after
+	 * @param string $value
+	 * @param string $prefix
+	 * @param string $suffix
 	 */
-	public function __construct( $before, $content = '', $after = '' ) {
-		$this->before = $before;
-		$this->content = $content;
-		$this->after = $after;
+	public function __construct( $value, $prefix = null, $suffix = null ) {
+		$this->value = $value;
+		$this->prefix = $prefix;
+		$this->suffix = $suffix;
 	}
 
 	/**
 	 * @param string $content
 	 * @return WrappedString Newly wrapped string
 	 */
-	protected function extend( $content ) {
+	protected function extend( $value ) {
 		$wrap = clone $this;
-		$wrap->content .= $content;
+		$suffixlen = strlen( $this->suffix );
+		if ( $suffixlen ) {
+			$wrap->value = substr( $this->value, 0, -$suffixlen );
+		}
+		$wrap->value .= substr( $value, strlen( $this->prefix ) );
 		return $wrap;
 	}
 
@@ -69,8 +73,12 @@ class WrappedString {
 		$consolidated = array();
 		$prev = current( $wraps );
 		while ( ( $wrap = next( $wraps ) ) !== false ) {
-			if ( $prev->before === $wrap->before && $prev->after === $wrap->after ) {
-				$prev = $prev->extend( $wrap->content );
+			if ( $prev->prefix !== null
+				&& $prev->prefix === $wrap->prefix
+				&& $prev->suffix !== null
+				&& $prev->suffix === $wrap->suffix
+			) {
+				$prev = $prev->extend( $wrap->value );
 			} else {
 				$consolidated[] = $prev;
 				$prev = $wrap;
@@ -95,6 +103,6 @@ class WrappedString {
 
 	/** @return string */
 	public function __toString() {
-		return $this->before . $this->content . $this->after;
+		return $this->value;
 	}
 }

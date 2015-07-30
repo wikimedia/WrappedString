@@ -34,7 +34,7 @@ use WrappedString\WrappedString;
 class WrappedStringTest extends \PHPUnit_Framework_TestCase {
 
 	public function testConstructor() {
-		$wstr = new WrappedString( '[', 'foo', ']' );
+		$wstr = new WrappedString( '[foo]', '[', ']' );
 		$this->assertEquals(
 			'[foo]',
 			strval( $wstr ),
@@ -45,54 +45,62 @@ class WrappedStringTest extends \PHPUnit_Framework_TestCase {
 	public static function provideCompact() {
 		return array(
 			array(
+				'Basic example',
+				array(
+					new WrappedString( '[foo]', '[', ']' ),
+					new WrappedString( '[bar]', '[', ']' ),
+				),
+				'[foobar]',
+			),
+			array(
 				'Merge consecutive strings that have the same before/after values',
 				array(
-					new WrappedString( '<foo>var q = q || [];', 'q.push( 0 );', '</foo>' ),
-					new WrappedString( '<foo>var q = q || [];', 'q.push( 1 );', '</foo>' ),
-					new WrappedString( '<foo>var q = q || [];', 'q.push( 2 );', '</foo>' ),
+					new WrappedString( '<x>var q = q || [];q.push( 0 );</x>', '<x>var q = q || [];', '</x>' ),
+					new WrappedString( '<x>var q = q || [];q.push( 1 );</x>', '<x>var q = q || [];', '</x>' ),
+					new WrappedString( '<x>var q = q || [];q.push( 2 );</x>', '<x>var q = q || [];', '</x>' ),
 				),
-				'<foo>var q = q || [];q.push( 0 );q.push( 1 );q.push( 2 );</foo>',
+				'<x>var q = q || [];q.push( 0 );q.push( 1 );q.push( 2 );</x>',
 			),
 			array(
 				'Consecutive strings that look similar but have different dividers are not merged',
 				array(
-					new WrappedString( '<foo>var q = q || [];', 'q.push( 0 );', '</foo>' ),
-					new WrappedString( '<foo>var q = q || [];', 'q.push( 1 );', '</foo>' ),
-					new WrappedString( '<foo>', 'var q = q || [];q.push( 2 );', '</foo>' ),
-					new WrappedString( '<foo>var q = q || [];', 'q.push( 3 );', '</foo>' ),
+					new WrappedString( '<x>var q = q || [];q.push( 0 );</x>', '<x>var q = q || [];', '</x>' ),
+					new WrappedString( '<x>var q = q || [];q.push( 1 );</x>', '<x>var q = q || [];', '</x>' ),
+					new WrappedString( '<x>var q = q || [];q.push( 2 );</x>', '<x>', '</x>' ),
+					new WrappedString( '<x>var q = q || [];q.push( 3 );</x>', '<x>var q = q || [];', '</x>' ),
 				),
-				'<foo>var q = q || [];q.push( 0 );q.push( 1 );</foo>' . "\n" .
-				'<foo>var q = q || [];q.push( 2 );</foo>' . "\n" .
-				'<foo>var q = q || [];q.push( 3 );</foo>',
+				'<x>var q = q || [];q.push( 0 );q.push( 1 );</x>' . "\n" .
+				'<x>var q = q || [];q.push( 2 );</x>' . "\n" .
+				'<x>var q = q || [];q.push( 3 );</x>',
 			),
 			array(
 				'Merge consecutive string that have an empty string prefix',
 				array(
-					new WrappedString( '<foo>var q = q || [];', 'q.push( 0 );', '</foo>' ),
-					new WrappedString( '', '<foo special=a></foo>' ),
-					new WrappedString( '', '<foo special=b></foo>' ),
-					new WrappedString( '<foo special=c></foo>' ),
-					new WrappedString( '<foo>var q = q || [];', 'q.push( 1 );', '</foo>' ),
+					new WrappedString( '<x>var q = q || [];q.push( 0 );</x>', '<x>var q = q || [];', '</x>' ),
+					new WrappedString( '<x special=a></x>', '', '' ),
+					new WrappedString( '<x special=b></x>', '', '' ),
+					new WrappedString( '<x special=c></x>' ),
+					new WrappedString( '<x>var q = q || [];q.push( 1 );</x>', '<x>var q = q || [];', '</x>' ),
 				),
-				'<foo>var q = q || [];q.push( 0 );</foo>' . "\n" .
-				'<foo special=a></foo><foo special=b></foo>' . "\n" .
-				'<foo special=c></foo>' . "\n" .
-				'<foo>var q = q || [];q.push( 1 );</foo>',
+				'<x>var q = q || [];q.push( 0 );</x>' . "\n" .
+				'<x special=a></x><x special=b></x>' . "\n" .
+				'<x special=c></x>' . "\n" .
+				'<x>var q = q || [];q.push( 1 );</x>',
 			),
 			array(
 				'No merges when there are no consecutive strings with matching segments',
 				array(
-					new WrappedString( '<foo>var q = q || [];', 'q.push( 0 );', '</foo>' ),
-					new WrappedString( '', '<foo special=a></foo>' ),
-					new WrappedString( '<foo>var q = q || [];', 'q.push( 1 );', '</foo>' ),
-					new WrappedString( '', '<foo special=b></foo>' ),
-					new WrappedString( '<foo>var q = q || [];', 'q.push( 2 );', '</foo>' ),
+					new WrappedString( '<x>var q = q || [];q.push( 0 );</x>', '<x>var q = q || [];', '</x>' ),
+					new WrappedString( '<x special=a></x>', '' ),
+					new WrappedString( '<x>var q = q || [];q.push( 1 );</x>', '<x>var q = q || [];', '</x>' ),
+					new WrappedString( '<x special=b></x>', '' ),
+					new WrappedString( '<x>var q = q || [];q.push( 2 );</x>', '<x>var q = q || [];', '</x>' ),
 				),
-				'<foo>var q = q || [];q.push( 0 );</foo>' . "\n" .
-				'<foo special=a></foo>' . "\n" .
-				'<foo>var q = q || [];q.push( 1 );</foo>' . "\n" .
-				'<foo special=b></foo>' . "\n" .
-				'<foo>var q = q || [];q.push( 2 );</foo>',
+				'<x>var q = q || [];q.push( 0 );</x>' . "\n" .
+				'<x special=a></x>' . "\n" .
+				'<x>var q = q || [];q.push( 1 );</x>' . "\n" .
+				'<x special=b></x>' . "\n" .
+				'<x>var q = q || [];q.push( 2 );</x>',
 			),
 		);
 	}

@@ -11,11 +11,11 @@ Here is how you use it:
 use WrappedString\WrappedString;
 
 $buffer = array(
-	new WrappedString( '<script>var q = q || [];', 'q.push( 0 );', '</script>' ),
-	new WrappedString( '<script>var q = q || [];', 'q.push( 1 );', '</script>' ),
+	new WrappedString( '[foo]', '[', ']' ),
+	new WrappedString( '[bar]', '[', ']' ),
 );
 $output = WrappedString::join( "\n", $buffer );
-// Result: '<script>var q = q || [];q.push( 0 );q.push( 1 );</script>'
+// Result: '[foobar]'
 </pre>
 
 License
