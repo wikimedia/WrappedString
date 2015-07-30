@@ -10,7 +10,14 @@
 		}
 	],
 	"autoload": {
-		"classmap": ["src/"]
+		"psr-4": {
+			"WrappedString\\": "src/"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"WrappedString\\Test\\": "tests/"
+		}
 	},
 	"require": {
 		"php": ">=5.3.3"
