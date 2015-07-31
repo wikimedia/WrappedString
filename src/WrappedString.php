@@ -73,7 +73,9 @@ class WrappedString {
 		$consolidated = array();
 		$prev = current( $wraps );
 		while ( ( $wrap = next( $wraps ) ) !== false ) {
-			if ( $prev->prefix !== null
+			if ( $prev instanceof WrappedString
+				&& $wrap instanceof WrappedString
+				&& $prev->prefix !== null
 				&& $prev->prefix === $wrap->prefix
 				&& $prev->suffix !== null
 				&& $prev->suffix === $wrap->suffix

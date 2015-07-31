@@ -53,6 +53,16 @@ class WrappedStringTest extends \PHPUnit_Framework_TestCase {
 				'[foobar]',
 			),
 			array(
+				'Mixed with primitive strings',
+				array(
+					new WrappedString( '[foo]', '[', ']' ),
+					new WrappedString( '[bar]', '[', ']' ),
+					'[quux]',
+					new WrappedString( '[baz]', '[', ']' ),
+				),
+				"[foobar]\n[quux]\n[baz]",
+			),
+			array(
 				'Merge consecutive strings that have the same before/after values',
 				array(
 					new WrappedString( '<x>var q = q || [];q.push( 0 );</x>', '<x>var q = q || [];', '</x>' ),
