@@ -62,13 +62,14 @@ class WrappedStringList {
 	 * @return string[] Compacted list
 	 */
 	protected static function compact( array $lists, $outerSep ) {
-		$consolidated = array();
+		$consolidated = [];
 		$prev = current( $lists );
 		// Wrap single WrappedString objects in a list for easier merging
 		if ( $prev instanceof WrappedString ) {
 			$prev = new WrappedStringList( $outerSep, [ $prev ] );
 		}
-		while ( ( $curr = next( $lists ) ) !== false ) {
+		while ( next( $lists ) !== false ) {
+			$curr = current( $lists );
 			if ( $curr instanceof WrappedString ) {
 				$curr = new WrappedStringList( $outerSep, [ $curr ] );
 			}

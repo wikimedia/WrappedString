@@ -42,7 +42,6 @@ class WrappedStringTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-
 	protected static function getSquareBracketWrappedX() {
 		return new WrappedString( '[x]', '[', ']' );
 	}
@@ -52,7 +51,7 @@ class WrappedStringTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testJoin() {
-		$wraps = array(
+		$wraps = [
 			self::getSquareBracketWrappedX(),
 			self::getSquareBracketWrappedX(),
 			self::getSquareBracketWrappedX(),
@@ -60,7 +59,7 @@ class WrappedStringTest extends \PHPUnit_Framework_TestCase {
 			self::getCurlyBracketWrappedY(),
 			self::getSquareBracketWrappedX(),
 			self::getCurlyBracketWrappedY(),
-		);
+		];
 		$this->assertEquals(
 			'[xxx]{yy}[x]{y}',
 			WrappedString::join( '', $wraps )
@@ -68,76 +67,76 @@ class WrappedStringTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public static function provideCompact() {
-		return array(
-			array(
+		return [
+			[
 				'Basic example',
-				array(
+				[
 					new WrappedString( '[foo]', '[', ']' ),
 					new WrappedString( '[bar]', '[', ']' ),
-				),
+				],
 				'[foobar]',
-			),
-			array(
+			],
+			[
 				'Mixed with primitive strings',
-				array(
+				[
 					new WrappedString( '[foo]', '[', ']' ),
 					new WrappedString( '[bar]', '[', ']' ),
 					'[quux]',
 					new WrappedString( '[baz]', '[', ']' ),
-				),
+				],
 				"[foobar]\n[quux]\n[baz]",
-			),
-			array(
+			],
+			[
 				'Merge consecutive strings that have the same before/after values',
-				array(
+				[
 					new WrappedString( '<x>var q = q || [];q.push( 0 );</x>', '<x>var q = q || [];', '</x>' ),
 					new WrappedString( '<x>var q = q || [];q.push( 1 );</x>', '<x>var q = q || [];', '</x>' ),
 					new WrappedString( '<x>var q = q || [];q.push( 2 );</x>', '<x>var q = q || [];', '</x>' ),
-				),
+				],
 				'<x>var q = q || [];q.push( 0 );q.push( 1 );q.push( 2 );</x>',
-			),
-			array(
+			],
+			[
 				'Consecutive strings that look similar but have different dividers are not merged',
-				array(
+				[
 					new WrappedString( '<x>var q = q || [];q.push( 0 );</x>', '<x>var q = q || [];', '</x>' ),
 					new WrappedString( '<x>var q = q || [];q.push( 1 );</x>', '<x>var q = q || [];', '</x>' ),
 					new WrappedString( '<x>var q = q || [];q.push( 2 );</x>', '<x>', '</x>' ),
 					new WrappedString( '<x>var q = q || [];q.push( 3 );</x>', '<x>var q = q || [];', '</x>' ),
-				),
+				],
 				'<x>var q = q || [];q.push( 0 );q.push( 1 );</x>' . "\n" .
 				'<x>var q = q || [];q.push( 2 );</x>' . "\n" .
 				'<x>var q = q || [];q.push( 3 );</x>',
-			),
-			array(
+			],
+			[
 				'Merge consecutive string that have an empty string prefix',
-				array(
+				[
 					new WrappedString( '<x>var q = q || [];q.push( 0 );</x>', '<x>var q = q || [];', '</x>' ),
 					new WrappedString( '<x special=a></x>', '', '' ),
 					new WrappedString( '<x special=b></x>', '', '' ),
 					new WrappedString( '<x special=c></x>' ),
 					new WrappedString( '<x>var q = q || [];q.push( 1 );</x>', '<x>var q = q || [];', '</x>' ),
-				),
+				],
 				'<x>var q = q || [];q.push( 0 );</x>' . "\n" .
 				'<x special=a></x><x special=b></x>' . "\n" .
 				'<x special=c></x>' . "\n" .
 				'<x>var q = q || [];q.push( 1 );</x>',
-			),
-			array(
+			],
+			[
 				'No merges when there are no consecutive strings with matching segments',
-				array(
+				[
 					new WrappedString( '<x>var q = q || [];q.push( 0 );</x>', '<x>var q = q || [];', '</x>' ),
 					new WrappedString( '<x special=a></x>', '' ),
 					new WrappedString( '<x>var q = q || [];q.push( 1 );</x>', '<x>var q = q || [];', '</x>' ),
 					new WrappedString( '<x special=b></x>', '' ),
 					new WrappedString( '<x>var q = q || [];q.push( 2 );</x>', '<x>var q = q || [];', '</x>' ),
-				),
+				],
 				'<x>var q = q || [];q.push( 0 );</x>' . "\n" .
 				'<x special=a></x>' . "\n" .
 				'<x>var q = q || [];q.push( 1 );</x>' . "\n" .
 				'<x special=b></x>' . "\n" .
 				'<x>var q = q || [];q.push( 2 );</x>',
-			),
-		);
+			],
+		];
 	}
 
 	/**

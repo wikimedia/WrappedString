@@ -43,18 +43,18 @@ class WrappedStringListTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testJoin() {
-		$wraps1 = array(
+		$wraps1 = [
 			self::getSquareBracketWrappedX(),
 			self::getSquareBracketWrappedX(),
 			self::getSquareBracketWrappedX(),
 			self::getCurlyBracketWrappedY(),
-		);
+		];
 		$list1 = WrappedString::join( "\n", $wraps1 );
-		$wraps2 = array(
+		$wraps2 = [
 			self::getCurlyBracketWrappedY(),
 			self::getSquareBracketWrappedX(),
 			self::getCurlyBracketWrappedY(),
-		);
+		];
 		$list2 = WrappedString::join( "\n", $wraps2 );
 		$this->assertEquals(
 			"[xxx]\n{yy}\n[x]\n{y}",
@@ -62,18 +62,18 @@ class WrappedStringListTest extends \PHPUnit_Framework_TestCase {
 			"Two compatible lists"
 		);
 
-		$wraps1 = array(
+		$wraps1 = [
 			self::getSquareBracketWrappedX(),
 			self::getSquareBracketWrappedX(),
 			self::getSquareBracketWrappedX(),
 			self::getCurlyBracketWrappedY(),
-		);
+		];
 		$list1 = WrappedString::join( '', $wraps1 );
-		$wraps2 = array(
+		$wraps2 = [
 			self::getCurlyBracketWrappedY(),
 			self::getSquareBracketWrappedX(),
 			self::getCurlyBracketWrappedY(),
-		);
+		];
 		$list2 = WrappedString::join( "\n", $wraps2 );
 		$this->assertEquals(
 			"[xxx]{y}\n{y}\n[x]\n{y}",
@@ -81,16 +81,16 @@ class WrappedStringListTest extends \PHPUnit_Framework_TestCase {
 			"Two incompatible lists (different separator)"
 		);
 
-		$wraps1 = array(
+		$wraps1 = [
 			self::getSquareBracketWrappedX(),
 			self::getSquareBracketWrappedX(),
 			self::getSquareBracketWrappedX(),
 			self::getCurlyBracketWrappedY(),
-		);
+		];
 		$list1 = WrappedString::join( '', $wraps1 );
-		$wraps2 = array(
+		$wraps2 = [
 			self::getCurlyBracketWrappedY(),
-		);
+		];
 		$list2 = WrappedString::join( '', $wraps2 );
 		$this->assertEquals(
 			"meh[xxx]{yy}meh",

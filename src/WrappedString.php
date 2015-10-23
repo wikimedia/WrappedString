@@ -72,9 +72,10 @@ class WrappedString {
 	 * @return WrappedString[] Compacted list
 	 */
 	public static function compact( array $wraps ) {
-		$consolidated = array();
+		$consolidated = [];
 		$prev = current( $wraps );
-		while ( ( $wrap = next( $wraps ) ) !== false ) {
+		while ( next( $wraps ) !== false ) {
+			$wrap = current( $wraps );
 			if ( $prev instanceof WrappedString
 				&& $wrap instanceof WrappedString
 				&& $prev->prefix !== null
