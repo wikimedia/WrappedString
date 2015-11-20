@@ -48,7 +48,7 @@ class WrappedString {
 	}
 
 	/**
-	 * @param string $content
+	 * @param string $value
 	 * @return WrappedString Newly wrapped string
 	 */
 	protected function extend( $value ) {
