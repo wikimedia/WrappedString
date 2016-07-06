@@ -42,6 +42,31 @@ class WrappedStringTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+
+	protected static function getFoo() {
+		return new WrappedString( '[x]', '[', ']' );
+	}
+
+	protected static function getBar() {
+		return new WrappedString( '{y}', '{', '}' );
+	}
+
+	public function testJoin() {
+		$wraps = array(
+			self::getFoo(),
+			self::getFoo(),
+			self::getFoo(),
+			self::getBar(),
+			self::getBar(),
+			self::getFoo(),
+			self::getBar(),
+		);
+		$this->assertEquals(
+			'[xxx]{yy}[x]{y}',
+			WrappedString::join( '', $wraps )
+		);
+	}
+
 	public static function provideCompact() {
 		return array(
 			array(
