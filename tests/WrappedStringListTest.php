@@ -50,17 +50,52 @@ class WrappedStringListTest extends \PHPUnit_Framework_TestCase {
 			self::getBar(),
 		);
 		$list1 = WrappedString::join( "\n", $wraps1 );
-
 		$wraps2 = array(
 			self::getBar(),
 			self::getFoo(),
 			self::getBar(),
 		);
 		$list2 = WrappedString::join( "\n", $wraps2 );
-
 		$this->assertEquals(
 			"[xxx]\n{yy}\n[x]\n{y}",
-			WrappedStringList::join( "\n", [ $list1, $list2 ] )
+			WrappedStringList::join( "\n", [ $list1, $list2 ] ),
+			"Two compatible lists"
+		);
+
+		$wraps1 = array(
+			self::getFoo(),
+			self::getFoo(),
+			self::getFoo(),
+			self::getBar(),
+		);
+		$list1 = WrappedString::join( '', $wraps1 );
+		$wraps2 = array(
+			self::getBar(),
+			self::getFoo(),
+			self::getBar(),
+		);
+		$list2 = WrappedString::join( "\n", $wraps2 );
+		$this->assertEquals(
+			"[xxx]{y}\n{y}\n[x]\n{y}",
+			WrappedStringList::join( "\n", [ $list1, $list2 ] ),
+			"Two incompatible lists (different separator)"
+		);
+
+		$wraps1 = array(
+			self::getFoo(),
+			self::getFoo(),
+			self::getFoo(),
+			self::getBar(),
+		);
+		$list1 = WrappedString::join( '', $wraps1 );
+		$wraps2 = array(
+			self::getBar(),
+		);
+		$list2 = WrappedString::join( '', $wraps2 );
+		$this->assertEquals(
+			"meh[xxx]{yy}meh",
+			WrappedStringList::join( '', [ 'meh', $list1, $list2, 'meh' ] ),
+			"Two lists and a regular string"
 		);
 	}
 }

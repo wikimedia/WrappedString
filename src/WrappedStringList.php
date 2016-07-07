@@ -68,19 +68,22 @@ class WrappedStringList {
 				if ( $curr instanceof WrappedStringList
 					&& $prev->sep === $curr->sep
 				) {
-					// Merge previous and current list
+					// Merge into previous list, and keep looking.
 					$prev = $prev->extend( $curr->wraps );
 				} else {
-					// Current one not mergeable. Compact previous one.
-					$prev = implode( $prev->sep, WrappedString::compact( $prev ) );
+					// Current list not mergeable. Commit previous one.
+					$prev = implode( $prev->sep, WrappedString::compact( $prev->wraps ) );
+					$consolidated[] = $prev;
+					$prev = $curr;
 				}
 			} else {
+				// Commit previous one
 				$consolidated[] = $prev;
 				$prev = $curr;
 			}
 		}
 
-		// Add last one
+		// Commit last one
 		if ( $prev instanceof WrappedStringList ) {
 			$consolidated[] = implode( $prev->sep, WrappedString::compact( $prev->wraps ) );
 		} else {
