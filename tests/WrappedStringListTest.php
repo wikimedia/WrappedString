@@ -34,26 +34,26 @@ use WrappedString\WrappedStringList;
  */
 class WrappedStringListTest extends \PHPUnit_Framework_TestCase {
 
-	protected static function getFoo() {
+	protected static function getSquareBracketWrappedX() {
 		return new WrappedString( '[x]', '[', ']' );
 	}
 
-	protected static function getBar() {
+	protected static function getCurlyBracketWrappedY() {
 		return new WrappedString( '{y}', '{', '}' );
 	}
 
 	public function testJoin() {
 		$wraps1 = array(
-			self::getFoo(),
-			self::getFoo(),
-			self::getFoo(),
-			self::getBar(),
+			self::getSquareBracketWrappedX(),
+			self::getSquareBracketWrappedX(),
+			self::getSquareBracketWrappedX(),
+			self::getCurlyBracketWrappedY(),
 		);
 		$list1 = WrappedString::join( "\n", $wraps1 );
 		$wraps2 = array(
-			self::getBar(),
-			self::getFoo(),
-			self::getBar(),
+			self::getCurlyBracketWrappedY(),
+			self::getSquareBracketWrappedX(),
+			self::getCurlyBracketWrappedY(),
 		);
 		$list2 = WrappedString::join( "\n", $wraps2 );
 		$this->assertEquals(
@@ -63,16 +63,16 @@ class WrappedStringListTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$wraps1 = array(
-			self::getFoo(),
-			self::getFoo(),
-			self::getFoo(),
-			self::getBar(),
+			self::getSquareBracketWrappedX(),
+			self::getSquareBracketWrappedX(),
+			self::getSquareBracketWrappedX(),
+			self::getCurlyBracketWrappedY(),
 		);
 		$list1 = WrappedString::join( '', $wraps1 );
 		$wraps2 = array(
-			self::getBar(),
-			self::getFoo(),
-			self::getBar(),
+			self::getCurlyBracketWrappedY(),
+			self::getSquareBracketWrappedX(),
+			self::getCurlyBracketWrappedY(),
 		);
 		$list2 = WrappedString::join( "\n", $wraps2 );
 		$this->assertEquals(
@@ -82,14 +82,14 @@ class WrappedStringListTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$wraps1 = array(
-			self::getFoo(),
-			self::getFoo(),
-			self::getFoo(),
-			self::getBar(),
+			self::getSquareBracketWrappedX(),
+			self::getSquareBracketWrappedX(),
+			self::getSquareBracketWrappedX(),
+			self::getCurlyBracketWrappedY(),
 		);
 		$list1 = WrappedString::join( '', $wraps1 );
 		$wraps2 = array(
-			self::getBar(),
+			self::getCurlyBracketWrappedY(),
 		);
 		$list2 = WrappedString::join( '', $wraps2 );
 		$this->assertEquals(
@@ -99,13 +99,13 @@ class WrappedStringListTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$lists = [
-			self::getFoo(),
+			self::getSquareBracketWrappedX(),
 			new WrappedStringList( '', [
-				self::getFoo(),
-				self::getFoo(),
-				self::getBar(),
+				self::getSquareBracketWrappedX(),
+				self::getSquareBracketWrappedX(),
+				self::getCurlyBracketWrappedY(),
 			] ),
-			self::getBar(),
+			self::getCurlyBracketWrappedY(),
 			'meh'
 		];
 		$this->assertEquals(

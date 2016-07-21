@@ -43,23 +43,23 @@ class WrappedStringTest extends \PHPUnit_Framework_TestCase {
 	}
 
 
-	protected static function getFoo() {
+	protected static function getSquareBracketWrappedX() {
 		return new WrappedString( '[x]', '[', ']' );
 	}
 
-	protected static function getBar() {
+	protected static function getCurlyBracketWrappedY() {
 		return new WrappedString( '{y}', '{', '}' );
 	}
 
 	public function testJoin() {
 		$wraps = array(
-			self::getFoo(),
-			self::getFoo(),
-			self::getFoo(),
-			self::getBar(),
-			self::getBar(),
-			self::getFoo(),
-			self::getBar(),
+			self::getSquareBracketWrappedX(),
+			self::getSquareBracketWrappedX(),
+			self::getSquareBracketWrappedX(),
+			self::getCurlyBracketWrappedY(),
+			self::getCurlyBracketWrappedY(),
+			self::getSquareBracketWrappedX(),
+			self::getCurlyBracketWrappedY(),
 		);
 		$this->assertEquals(
 			'[xxx]{yy}[x]{y}',
