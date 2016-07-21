@@ -97,5 +97,21 @@ class WrappedStringListTest extends \PHPUnit_Framework_TestCase {
 			WrappedStringList::join( '', [ 'meh', $list1, $list2, 'meh' ] ),
 			"Two lists and a regular string"
 		);
+
+		$lists = [
+			self::getFoo(),
+			new WrappedStringList( '', [
+				self::getFoo(),
+				self::getFoo(),
+				self::getBar(),
+			] ),
+			self::getBar(),
+			'meh'
+		];
+		$this->assertEquals(
+			"[xxx]{yy}meh",
+			WrappedStringList::join( '', $lists ),
+			"Lists, wraps, and regular strings"
+		);
 	}
 }
