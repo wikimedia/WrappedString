@@ -114,4 +114,17 @@ class WrappedStringListTest extends \PHPUnit_Framework_TestCase {
 			"Lists, wraps, and regular strings"
 		);
 	}
+
+	public function testToString() {
+		$list = new WrappedStringList( '', [
+			self::getSquareBracketWrappedX(),
+			self::getSquareBracketWrappedX(),
+			self::getCurlyBracketWrappedY(),
+		] );
+		$this->assertEquals(
+			"[xx]{y}",
+			strval( $list ),
+			"Join via native __toString"
+		);
+	}
 }
