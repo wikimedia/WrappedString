@@ -24,13 +24,13 @@
  * @file
  */
 
-namespace WrappedString\Test;
+namespace Wikimedia\Test;
 
-use WrappedString\WrappedString;
-use WrappedString\WrappedStringList;
+use Wikimedia\WrappedString;
+use Wikimedia\WrappedStringList;
 
 /**
- * @covers WrappedString\WrappedStringList
+ * @covers Wikimedia\WrappedStringList
  */
 class WrappedStringListTest extends \PHPUnit_Framework_TestCase {
 

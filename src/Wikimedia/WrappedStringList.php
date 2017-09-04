@@ -24,7 +24,7 @@
  * @file
  */
 
-namespace WrappedString;
+namespace Wikimedia;
 
 class WrappedStringList {
 	/** @var string */

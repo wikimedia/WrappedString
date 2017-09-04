@@ -8,7 +8,7 @@ HTML open/close tags and JavaScript boilerplate.
 Here is how you use it:
 
 <pre lang="php">
-use WrappedString\WrappedString;
+use Wikimedia\WrappedString;
 
 $buffer = array(
 	new WrappedString( '[foo]', '[', ']' ),

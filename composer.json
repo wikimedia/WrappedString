@@ -11,12 +11,13 @@
 	],
 	"autoload": {
 		"psr-4": {
-			"WrappedString\\": "src/"
+			"Wikimedia\\": "src/Wikimedia",
+			"WrappedString\\": "src/WrappedString"
 		}
 	},
 	"autoload-dev": {
 		"psr-4": {
-			"WrappedString\\Test\\": "tests/"
+			"Wikimedia\\Test\\": "tests/"
 		}
 	},
 	"require": {
