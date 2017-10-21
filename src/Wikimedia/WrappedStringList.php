@@ -43,7 +43,7 @@ class WrappedStringList {
 	}
 
 	/**
-	 * @params WrappedString[] $wraps
+	 * @param WrappedString[] $wraps
 	 * @return WrappedStringList Combined list
 	 */
 	protected function extend( array $wraps ) {
