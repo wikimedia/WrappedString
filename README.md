@@ -10,10 +10,10 @@ Here is how you use it:
 <pre lang="php">
 use Wikimedia\WrappedString;
 
-$buffer = array(
+$buffer = [
 	new WrappedString( '[foo]', '[', ']' ),
 	new WrappedString( '[bar]', '[', ']' ),
-);
+];
 $output = WrappedString::join( "\n", $buffer );
 // Result: '[foobar]'
 </pre>
