@@ -11,8 +11,7 @@
 	],
 	"autoload": {
 		"psr-4": {
-			"Wikimedia\\": "src/Wikimedia",
-			"WrappedString\\": "src/WrappedString"
+			"Wikimedia\\": "src/Wikimedia"
 		}
 	},
 	"autoload-dev": {
