@@ -32,7 +32,7 @@ use Wikimedia\WrappedStringList;
 /**
  * @covers Wikimedia\WrappedStringList
  */
-class WrappedStringListTest extends \PHPUnit_Framework_TestCase {
+class WrappedStringListTest extends \PHPUnit\Framework\TestCase {
 
 	protected static function getSquareBracketWrappedX() {
 		return new WrappedString( '[x]', '[', ']' );

@@ -31,7 +31,7 @@ use Wikimedia\WrappedString;
 /**
  * @covers Wikimedia\WrappedString
  */
-class WrappedStringTest extends \PHPUnit_Framework_TestCase {
+class WrappedStringTest extends \PHPUnit\Framework\TestCase {
 
 	public function testConstructor() {
 		$wstr = new WrappedString( '[foo]', '[', ']' );
