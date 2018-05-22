@@ -109,6 +109,19 @@ class WrappedStringListTest extends \PHPUnit\Framework\TestCase {
 				],
 				"[xxx]{yy}meh",
 			],
+			"Nested lists" => [
+				'',
+				[
+					new WrappedStringList( '', [
+						new WrappedStringList( '', [
+							self::getSquareBracketWrappedX(),
+						] ),
+						self::getSquareBracketWrappedX(),
+						self::getCurlyBracketWrappedY(),
+					] )
+				],
+				"[xx]{y}",
+			],
 		];
 	}
 
