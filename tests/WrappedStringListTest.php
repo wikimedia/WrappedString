@@ -42,76 +42,83 @@ class WrappedStringListTest extends \PHPUnit\Framework\TestCase {
 		return new WrappedString( '{y}', '{', '}' );
 	}
 
-	public function testJoin() {
-		$wraps1 = [
-			self::getSquareBracketWrappedX(),
-			self::getSquareBracketWrappedX(),
-			self::getSquareBracketWrappedX(),
-			self::getCurlyBracketWrappedY(),
+	public static function provideJoinCases() {
+		return [
+			'Two compatible lists' => [
+				"\n",
+				[
+					WrappedString::join( "\n", [
+						self::getSquareBracketWrappedX(),
+						self::getSquareBracketWrappedX(),
+						self::getSquareBracketWrappedX(),
+						self::getCurlyBracketWrappedY(),
+					] ),
+					WrappedString::join( "\n", [
+						self::getCurlyBracketWrappedY(),
+						self::getSquareBracketWrappedX(),
+						self::getCurlyBracketWrappedY(),
+					] )
+				],
+				"[xxx]\n{yy}\n[x]\n{y}",
+			],
+			"Two incompatible lists (different separator)" => [
+				"\n",
+				[
+					WrappedString::join( '', [
+						self::getSquareBracketWrappedX(),
+						self::getSquareBracketWrappedX(),
+						self::getSquareBracketWrappedX(),
+						self::getCurlyBracketWrappedY(),
+					] ),
+					WrappedString::join( "\n", [
+						self::getCurlyBracketWrappedY(),
+						self::getSquareBracketWrappedX(),
+						self::getCurlyBracketWrappedY(),
+					] ),
+				],
+				"[xxx]{y}\n{y}\n[x]\n{y}",
+			],
+			"Two lists and a regular string" => [
+				'',
+				[
+					'meh',
+					WrappedString::join( '', [
+						self::getSquareBracketWrappedX(),
+						self::getSquareBracketWrappedX(),
+						self::getSquareBracketWrappedX(),
+						self::getCurlyBracketWrappedY(),
+					] ),
+					WrappedString::join( '', [
+						self::getCurlyBracketWrappedY(),
+					] ),
+					'meh',
+				],
+				"meh[xxx]{yy}meh"
+			],
+			"Lists, wraps, and regular strings" => [
+				'',
+				[
+					self::getSquareBracketWrappedX(),
+					new WrappedStringList( '', [
+						self::getSquareBracketWrappedX(),
+						self::getSquareBracketWrappedX(),
+						self::getCurlyBracketWrappedY(),
+					] ),
+					self::getCurlyBracketWrappedY(),
+					'meh'
+				],
+				"[xxx]{yy}meh",
+			],
 		];
-		$list1 = WrappedString::join( "\n", $wraps1 );
-		$wraps2 = [
-			self::getCurlyBracketWrappedY(),
-			self::getSquareBracketWrappedX(),
-			self::getCurlyBracketWrappedY(),
-		];
-		$list2 = WrappedString::join( "\n", $wraps2 );
-		$this->assertEquals(
-			"[xxx]\n{yy}\n[x]\n{y}",
-			WrappedStringList::join( "\n", [ $list1, $list2 ] ),
-			"Two compatible lists"
-		);
+	}
 
-		$wraps1 = [
-			self::getSquareBracketWrappedX(),
-			self::getSquareBracketWrappedX(),
-			self::getSquareBracketWrappedX(),
-			self::getCurlyBracketWrappedY(),
-		];
-		$list1 = WrappedString::join( '', $wraps1 );
-		$wraps2 = [
-			self::getCurlyBracketWrappedY(),
-			self::getSquareBracketWrappedX(),
-			self::getCurlyBracketWrappedY(),
-		];
-		$list2 = WrappedString::join( "\n", $wraps2 );
+	/**
+	 * @dataProvider provideJoinCases
+	 */
+	public function testJoin( $sep, $lists, $expect ) {
 		$this->assertEquals(
-			"[xxx]{y}\n{y}\n[x]\n{y}",
-			WrappedStringList::join( "\n", [ $list1, $list2 ] ),
-			"Two incompatible lists (different separator)"
-		);
-
-		$wraps1 = [
-			self::getSquareBracketWrappedX(),
-			self::getSquareBracketWrappedX(),
-			self::getSquareBracketWrappedX(),
-			self::getCurlyBracketWrappedY(),
-		];
-		$list1 = WrappedString::join( '', $wraps1 );
-		$wraps2 = [
-			self::getCurlyBracketWrappedY(),
-		];
-		$list2 = WrappedString::join( '', $wraps2 );
-		$this->assertEquals(
-			"meh[xxx]{yy}meh",
-			WrappedStringList::join( '', [ 'meh', $list1, $list2, 'meh' ] ),
-			"Two lists and a regular string"
-		);
-
-		$lists = [
-			self::getSquareBracketWrappedX(),
-			new WrappedStringList( '', [
-				self::getSquareBracketWrappedX(),
-				self::getSquareBracketWrappedX(),
-				self::getCurlyBracketWrappedY(),
-			] ),
-			self::getCurlyBracketWrappedY(),
-			'meh'
-		];
-		$this->assertEquals(
-			"[xxx]{yy}meh",
-			WrappedStringList::join( '', $lists ),
-			"Lists, wraps, and regular strings"
+			$expect,
+			WrappedStringList::join( $sep, $lists )
 		);
 	}
 
