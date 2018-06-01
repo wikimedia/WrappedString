@@ -38,8 +38,8 @@ class WrappedString {
 
 	/**
 	 * @param string $value
-	 * @param string $prefix
-	 * @param string $suffix
+	 * @param string|null $prefix
+	 * @param string|null $suffix
 	 */
 	public function __construct( $value, $prefix = null, $suffix = null ) {
 		$this->value = $value;
