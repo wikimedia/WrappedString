@@ -122,6 +122,64 @@ class WrappedStringListTest extends \PHPUnit\Framework\TestCase {
 				],
 				"[xx]{y}",
 			],
+			"Empty list after empty string T196496" => [
+				"\n",
+				[
+					new WrappedStringList( "\n", [
+						"",
+						new WrappedStringList( "\n", [
+							new WrappedStringList( "\n", [] ),
+						] ),
+						self::getCurlyBracketWrappedY()
+					] )
+				],
+				"\n{y}",
+			],
+			"Empty list in the middle T196496" => [
+				"\n",
+				[
+					new WrappedStringList( "\n", [
+						"A",
+						new WrappedStringList( "\n", [
+							new WrappedStringList( "\n", [] ),
+						] ),
+						self::getCurlyBracketWrappedY()
+					] )
+				],
+				"A\n{y}",
+			],
+			// Booleans and null are not offically supported, but any non-WrappedString
+			// values such other foreign objects with a toString() method, are
+			// casted to a string using PHP's casting rules, which turns false
+			// into an empty string.
+			"List containing false" => [
+				"\n",
+				[
+					new WrappedStringList( "\n", [
+						"A",
+						false,
+						new WrappedStringList( "\n", [
+							new WrappedStringList( "\n", [] ),
+						] ),
+						self::getCurlyBracketWrappedY()
+					] )
+				],
+				"A\n\n{y}",
+			],
+			"List containing null" => [
+				"\n",
+				[
+					new WrappedStringList( "\n", [
+						"A",
+						null,
+						new WrappedStringList( "\n", [
+							new WrappedStringList( "\n", [] ),
+						] ),
+						self::getCurlyBracketWrappedY()
+					] )
+				],
+				"A\n\n{y}",
+			],
 		];
 	}
 
