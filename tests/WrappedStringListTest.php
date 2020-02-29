@@ -185,6 +185,8 @@ class WrappedStringListTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * @dataProvider provideJoinCases
+	 * @covers Wikimedia\WrappedStringList
+	 * @covers Wikimedia\WrappedString
 	 */
 	public function testJoin( $sep, $lists, $expect ) {
 		$this->assertEquals(
