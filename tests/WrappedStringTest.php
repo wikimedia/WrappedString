@@ -26,6 +26,7 @@
 
 namespace Wikimedia\Test;
 
+use DomainException;
 use Wikimedia\WrappedString;
 
 /**
@@ -148,5 +149,17 @@ class WrappedStringTest extends \PHPUnit\Framework\TestCase {
 			WrappedString::join( "\n", $wraps ),
 			$msg
 		);
+	}
+
+	public function testInvalidPrefix() {
+		$this->expectException( DomainException::class );
+		$this->expectExceptionMessage( 'Prefix must match' );
+		new WrappedString( 'Hello</x>', '<x>', '</x>' );
+	}
+
+	public function testInvalidSuffix() {
+		$this->expectException( DomainException::class );
+		$this->expectExceptionMessage( 'Suffix must match' );
+		new WrappedString( '<x>world', '<x>', '</x>' );
 	}
 }
