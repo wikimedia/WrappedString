@@ -7,7 +7,7 @@ HTML open/close tags and JavaScript boilerplate.
 
 Here is how you use it:
 
-```lang=php
+```php
 use Wikimedia\WrappedString;
 
 $buffer = [
