@@ -82,9 +82,8 @@ class WrappedString {
 	 *
 	 * NOTE: This is an internal method. Use join() or WrappedStringList instead.
 	 *
-	 * @param (string|WrappedString|WrappedStringList)[] $wraps
-	 * @return string[] Compacted list to be treated as strings
-	 * (may contain WrappedString and WrappedStringList objects)
+	 * @param array<string|WrappedString|WrappedStringList> $wraps
+	 * @return array<string|WrappedString|WrappedStringList> Compacted list to be treated as strings
 	 */
 	public static function compact( array $wraps ) {
 		$consolidated = [];
@@ -118,6 +117,7 @@ class WrappedString {
 		// Add last one
 		$consolidated[] = $prev;
 
+		// @phan-suppress-next-line PhanTypeMismatchReturn
 		return $consolidated;
 	}
 
