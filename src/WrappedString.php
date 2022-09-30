@@ -44,12 +44,12 @@ class WrappedString {
 	 * @param string|null $suffix
 	 */
 	public function __construct( $value, $prefix = null, $suffix = null ) {
-		$prefixlen = strlen( $prefix );
-		if ( $prefixlen && substr( $value, 0, $prefixlen ) !== $prefix ) {
+		$prefixLen = strlen( $prefix );
+		if ( $prefixLen && substr( $value, 0, $prefixLen ) !== $prefix ) {
 			throw new DomainException( 'Prefix must match value' );
 		}
-		$suffixlen = strlen( $suffix );
-		if ( $suffixlen && substr( $value, -$suffixlen ) !== $suffix ) {
+		$suffixLen = strlen( $suffix );
+		if ( $suffixLen && substr( $value, -$suffixLen ) !== $suffix ) {
 			throw new DomainException( 'Suffix must match value' );
 		}
 
@@ -64,14 +64,14 @@ class WrappedString {
 	 */
 	protected function extend( $value ) {
 		$wrap = clone $this;
-		$suffixlen = strlen( $this->suffix );
+		$suffixLen = strlen( $this->suffix );
 		// Remove the suffix (temporarily), to open the string for merging.
-		if ( $suffixlen ) {
-			$wrap->value = substr( $this->value, 0, -$suffixlen );
+		if ( $suffixLen ) {
+			$wrap->value = substr( $this->value, 0, -$suffixLen );
 		}
 		// Append the next value without prefix, thus ending with the suffix again.
-		$prefixlen = strlen( $this->prefix );
-		$wrap->value .= substr( $value, $prefixlen );
+		$prefixLen = strlen( $this->prefix );
+		$wrap->value .= substr( $value, $prefixLen );
 		return $wrap;
 	}
 
@@ -124,7 +124,7 @@ class WrappedString {
 	/**
 	 * Join several wrapped strings with a separator between each.
 	 *
-	 * This method is compatibile with native PHP implode(). The actual join
+	 * This method is compatible with native PHP implode(). The actual join
 	 * operation is deferred to WrappedStringList::__toString(). This allows
 	 * callers to collect multiple lists and compact them together.
 	 *
