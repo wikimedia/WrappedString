@@ -43,16 +43,6 @@ class WrappedStringList {
 	}
 
 	/**
-	 * @param (string|WrappedString|WrappedStringList)[] $wraps
-	 * @return WrappedStringList Combined list
-	 */
-	protected function extend( array $wraps ) {
-		$list = clone $this;
-		$list->wraps = array_merge( $list->wraps, $wraps );
-		return $list;
-	}
-
-	/**
 	 * Merge consecutive lists with the same separator.
 	 *
 	 * Does not modify the given array or any of the objects in it.
