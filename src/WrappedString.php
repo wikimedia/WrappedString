@@ -44,11 +44,11 @@ class WrappedString {
 	 * @param string|null $suffix
 	 */
 	public function __construct( $value, $prefix = null, $suffix = null ) {
-		$prefixLen = strlen( $prefix );
+		$prefixLen = strlen( $prefix ?? '' );
 		if ( $prefixLen && substr( $value, 0, $prefixLen ) !== $prefix ) {
 			throw new DomainException( 'Prefix must match value' );
 		}
-		$suffixLen = strlen( $suffix );
+		$suffixLen = strlen( $suffix ?? '' );
 		if ( $suffixLen && substr( $value, -$suffixLen ) !== $suffix ) {
 			throw new DomainException( 'Suffix must match value' );
 		}
