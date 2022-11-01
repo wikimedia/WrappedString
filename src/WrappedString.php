@@ -117,7 +117,6 @@ class WrappedString {
 		// Add last one
 		$consolidated[] = $prev;
 
-		// @phan-suppress-next-line PhanTypeMismatchReturn
 		return $consolidated;
 	}
 
