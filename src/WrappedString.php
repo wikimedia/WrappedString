@@ -69,7 +69,7 @@ class WrappedString {
 		if ( $suffixLen ) {
 			$wrap->value = substr( $this->value, 0, -$suffixLen );
 		}
-		// Append the next value without prefix, thus ending with the suffix again.
+		// Append the next value without a prefix, thus ending with the suffix again.
 		$prefixLen = strlen( $this->prefix );
 		$wrap->value .= substr( $value, $prefixLen );
 		return $wrap;
@@ -89,7 +89,7 @@ class WrappedString {
 		$consolidated = [];
 		if ( $wraps === [] ) {
 			// Return early so that we don't have to deal with $prev being
-			// set or not set, and avoid risk of adding $prev's initial null
+			// set or not set, and avoid the risk of adding $prev's initial null
 			// value to the list as extra value (T196496).
 			return $consolidated;
 		}
