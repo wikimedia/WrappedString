@@ -2,12 +2,13 @@
 namespace Wikimedia\Test;
 
 use DomainException;
+use PHPUnit\Framework\TestCase;
 use Wikimedia\WrappedString;
 
 /**
- * @covers Wikimedia\WrappedString
+ * @covers \Wikimedia\WrappedString
  */
-class WrappedStringTest extends \PHPUnit\Framework\TestCase {
+class WrappedStringTest extends TestCase {
 
 	public function testConstructor() {
 		$wstr = new WrappedString( '[foo]', '[', ']' );

@@ -1,13 +1,14 @@
 <?php
 namespace Wikimedia\Test;
 
+use PHPUnit\Framework\TestCase;
 use Wikimedia\WrappedString;
 use Wikimedia\WrappedStringList;
 
 /**
- * @covers Wikimedia\WrappedStringList
+ * @covers \Wikimedia\WrappedStringList
  */
-class WrappedStringListTest extends \PHPUnit\Framework\TestCase {
+class WrappedStringListTest extends TestCase {
 
 	protected static function getSquareBracketWrappedX() {
 		return new WrappedString( '[x]', '[', ']' );
@@ -123,7 +124,7 @@ class WrappedStringListTest extends \PHPUnit\Framework\TestCase {
 				],
 				"A\n{y}",
 			],
-			// Booleans and null are not offically supported, but any non-WrappedString
+			// Booleans and null are not officially supported, but any non-WrappedString
 			// values such other foreign objects with a toString() method, are
 			// casted to a string using PHP's casting rules, which turns false
 			// into an empty string.
@@ -160,8 +161,6 @@ class WrappedStringListTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * @dataProvider provideJoinCases
-	 * @covers Wikimedia\WrappedStringList
-	 * @covers Wikimedia\WrappedString
 	 */
 	public function testJoin( $sep, $lists, $expect ) {
 		$this->assertEquals(
