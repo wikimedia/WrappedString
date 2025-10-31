@@ -46,6 +46,11 @@ class WrappedStringTest extends TestCase {
 	public static function provideCompact() {
 		return [
 			[
+				'Empty array',
+				[],
+				'',
+			],
+			[
 				'Basic example',
 				[
 					new WrappedString( '[foo]', '[', ']' ),
