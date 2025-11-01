@@ -1,4 +1,6 @@
 <?php
+declare( strict_types = 1 );
+
 /**
  * Copyright 2015 Timo Tijhof
  *
@@ -29,21 +31,11 @@ namespace Wikimedia;
 use DomainException;
 
 class WrappedString {
-	/** @var string */
-	protected $value;
+	protected string $value;
+	protected readonly ?string $prefix;
+	protected readonly ?string $suffix;
 
-	/** @var string|null */
-	protected $prefix;
-
-	/** @var string|null */
-	protected $suffix;
-
-	/**
-	 * @param string $value
-	 * @param string|null $prefix
-	 * @param string|null $suffix
-	 */
-	public function __construct( $value, $prefix = null, $suffix = null ) {
+	public function __construct( string $value, ?string $prefix = null, ?string $suffix = null ) {
 		$prefixLen = strlen( $prefix ?? '' );
 		if ( $prefixLen && substr( $value, 0, $prefixLen ) !== $prefix ) {
 			throw new DomainException( 'Prefix must match value' );
@@ -62,15 +54,15 @@ class WrappedString {
 	 * @param string $value Value of a WrappedString with the same prefix and suffix
 	 * @return WrappedString Newly wrapped string
 	 */
-	protected function extend( $value ) {
+	protected function extend( string $value ): self {
 		$wrap = clone $this;
-		$suffixLen = strlen( $this->suffix );
+		$suffixLen = strlen( $this->suffix ?? '' );
 		// Remove the suffix (temporarily), to open the string for merging.
 		if ( $suffixLen ) {
 			$wrap->value = substr( $this->value, 0, -$suffixLen );
 		}
 		// Append the next value without a prefix, thus ending with the suffix again.
-		$prefixLen = strlen( $this->prefix );
+		$prefixLen = strlen( $this->prefix ?? '' );
 		$wrap->value .= substr( $value, $prefixLen );
 		return $wrap;
 	}
@@ -85,7 +77,7 @@ class WrappedString {
 	 * @param array<string|WrappedString|WrappedStringList> $wraps
 	 * @return array<string|WrappedString|WrappedStringList> Compacted list to be treated as strings
 	 */
-	public static function compact( array $wraps ) {
+	public static function compact( array $wraps ): array {
 		$consolidated = [];
 		if ( $wraps === [] ) {
 			// Return early so that we don't have to deal with $prev being
@@ -129,14 +121,12 @@ class WrappedString {
 	 *
 	 * @param string $sep
 	 * @param (string|WrappedString|WrappedStringList)[] $wraps
-	 * @return WrappedStringList
 	 */
-	public static function join( $sep, array $wraps ) {
+	public static function join( string $sep, array $wraps ): WrappedStringList {
 		return new WrappedStringList( $sep, $wraps );
 	}
 
-	/** @return string */
-	public function __toString() {
+	public function __toString(): string {
 		return $this->value;
 	}
 }

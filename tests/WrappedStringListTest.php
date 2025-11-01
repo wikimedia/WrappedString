@@ -1,4 +1,6 @@
 <?php
+declare( strict_types = 1 );
+
 namespace Wikimedia\Test;
 
 use PHPUnit\Framework\TestCase;
@@ -10,11 +12,11 @@ use Wikimedia\WrappedStringList;
  */
 class WrappedStringListTest extends TestCase {
 
-	protected static function getSquareBracketWrappedX() {
+	protected static function getSquareBracketWrappedX(): WrappedString {
 		return new WrappedString( '[x]', '[', ']' );
 	}
 
-	protected static function getCurlyBracketWrappedY() {
+	protected static function getCurlyBracketWrappedY(): WrappedString {
 		return new WrappedString( '{y}', '{', '}' );
 	}
 
@@ -162,8 +164,8 @@ class WrappedStringListTest extends TestCase {
 	/**
 	 * @dataProvider provideJoinCases
 	 */
-	public function testJoin( $sep, $lists, $expect ) {
-		$this->assertEquals(
+	public function testJoin( string $sep, array $lists, string $expect ) {
+		$this->assertSame(
 			$expect,
 			WrappedStringList::join( $sep, $lists )
 		);
@@ -175,7 +177,7 @@ class WrappedStringListTest extends TestCase {
 			self::getSquareBracketWrappedX(),
 			self::getCurlyBracketWrappedY(),
 		] );
-		$this->assertEquals(
+		$this->assertSame(
 			"[xx]{y}",
 			strval( $list ),
 			"Join via native __toString"

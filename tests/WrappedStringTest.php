@@ -1,4 +1,6 @@
 <?php
+declare( strict_types = 1 );
+
 namespace Wikimedia\Test;
 
 use DomainException;
@@ -12,18 +14,18 @@ class WrappedStringTest extends TestCase {
 
 	public function testConstructor() {
 		$wstr = new WrappedString( '[foo]', '[', ']' );
-		$this->assertEquals(
+		$this->assertSame(
 			'[foo]',
 			strval( $wstr ),
 			'Construct and stringify'
 		);
 	}
 
-	protected static function getSquareBracketWrappedX() {
+	protected static function getSquareBracketWrappedX(): WrappedString {
 		return new WrappedString( '[x]', '[', ']' );
 	}
 
-	protected static function getCurlyBracketWrappedY() {
+	protected static function getCurlyBracketWrappedY(): WrappedString {
 		return new WrappedString( '{y}', '{', '}' );
 	}
 
@@ -124,7 +126,7 @@ class WrappedStringTest extends TestCase {
 	/**
 	 * @dataProvider provideCompact
 	 */
-	public function testCompact( $msg, $wraps, $expected ) {
+	public function testCompact( string $msg, array $wraps, string $expected ) {
 		$this->assertEquals(
 			$expected,
 			WrappedString::join( "\n", $wraps ),
