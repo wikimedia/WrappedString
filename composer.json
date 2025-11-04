@@ -41,6 +41,7 @@
 			"minus-x check ."
 		],
 		"phan": "phan --allow-polyfill-parser",
+		"changelog": "git log HEAD --format=\"* %s (%aN)\" --no-merges --not --tags | sort | grep -vE \"^\\* (build|docs?|tests?):\"",
 		"cover": "phpunit --coverage-html coverage",
 		"fix": [
 			"minus-x fix .",
