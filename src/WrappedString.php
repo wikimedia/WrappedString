@@ -36,12 +36,10 @@ class WrappedString {
 	protected readonly ?string $suffix;
 
 	public function __construct( string $value, ?string $prefix = null, ?string $suffix = null ) {
-		$prefixLen = strlen( $prefix ?? '' );
-		if ( $prefixLen && substr( $value, 0, $prefixLen ) !== $prefix ) {
+		if ( $prefix !== null && !str_starts_with( $value, $prefix ) ) {
 			throw new DomainException( 'Prefix must match value' );
 		}
-		$suffixLen = strlen( $suffix ?? '' );
-		if ( $suffixLen && substr( $value, -$suffixLen ) !== $suffix ) {
+		if ( $suffix !== null && !str_ends_with( $value, $suffix ) ) {
 			throw new DomainException( 'Suffix must match value' );
 		}
 
