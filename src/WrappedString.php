@@ -29,40 +29,38 @@ declare( strict_types = 1 );
 namespace Wikimedia;
 
 use DomainException;
+use Stringable;
 
-class WrappedString {
-	protected string $value;
-	protected readonly ?string $prefix;
-	protected readonly ?string $suffix;
+class WrappedString implements Stringable {
 
-	public function __construct( string $value, ?string $prefix = null, ?string $suffix = null ) {
+	public function __construct(
+		protected readonly string $value,
+		protected readonly ?string $prefix = null,
+		protected readonly ?string $suffix = null,
+	) {
 		if ( $prefix !== null && !str_starts_with( $value, $prefix ) ) {
 			throw new DomainException( 'Prefix must match value' );
 		}
 		if ( $suffix !== null && !str_ends_with( $value, $suffix ) ) {
 			throw new DomainException( 'Suffix must match value' );
 		}
-
-		$this->value = $value;
-		$this->prefix = $prefix;
-		$this->suffix = $suffix;
 	}
 
 	/**
 	 * @param string $value Value of a WrappedString with the same prefix and suffix
-	 * @return WrappedString Newly wrapped string
+	 * @return self Newly wrapped string
 	 */
 	protected function extend( string $value ): self {
-		$wrap = clone $this;
+		$newValue = $this->value;
 		$suffixLen = strlen( $this->suffix ?? '' );
 		// Remove the suffix (temporarily), to open the string for merging.
 		if ( $suffixLen ) {
-			$wrap->value = substr( $this->value, 0, -$suffixLen );
+			$newValue = substr( $newValue, 0, -$suffixLen );
 		}
 		// Append the next value without a prefix, thus ending with the suffix again.
 		$prefixLen = strlen( $this->prefix ?? '' );
-		$wrap->value .= substr( $value, $prefixLen );
-		return $wrap;
+		$newValue .= substr( $value, $prefixLen );
+		return new self( $newValue, $this->prefix, $this->suffix );
 	}
 
 	/**
@@ -70,10 +68,10 @@ class WrappedString {
 	 *
 	 * Does not modify the array or the WrappedString objects.
 	 *
-	 * NOTE: This is an internal method. Use join() or WrappedStringList instead.
+	 * @internal Use {@link join} or {@link WrappedStringList} instead.
 	 *
-	 * @param array<string|WrappedString|WrappedStringList> $wraps
-	 * @return array<string|WrappedString|WrappedStringList> Compacted list to be treated as strings
+	 * @param array<string|self|WrappedStringList> $wraps
+	 * @return array<string|self|WrappedStringList> Compacted list to be treated as strings
 	 */
 	public static function compact( array $wraps ): array {
 		$consolidated = [];
@@ -91,8 +89,8 @@ class WrappedString {
 				$prev = $wrap;
 				continue;
 			}
-			if ( $prev instanceof WrappedString
-				&& $wrap instanceof WrappedString
+			if ( $prev instanceof self
+				&& $wrap instanceof self
 				&& $prev->prefix !== null
 				&& $prev->prefix === $wrap->prefix
 				&& $prev->suffix !== null
@@ -118,7 +116,7 @@ class WrappedString {
 	 * callers to collect multiple lists and compact them together.
 	 *
 	 * @param string $sep
-	 * @param (string|WrappedString|WrappedStringList)[] $wraps
+	 * @param (string|self|WrappedStringList)[] $wraps
 	 */
 	public static function join( string $sep, array $wraps ): WrappedStringList {
 		return new WrappedStringList( $sep, $wraps );

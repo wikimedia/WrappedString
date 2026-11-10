@@ -28,19 +28,18 @@ declare( strict_types = 1 );
 
 namespace Wikimedia;
 
-class WrappedStringList {
-	protected readonly string $sep;
+use Stringable;
 
-	/** @var (string|WrappedString|WrappedStringList)[] */
-	protected array $wraps;
+class WrappedStringList implements Stringable {
 
 	/**
 	 * @param string $sep
-	 * @param (string|WrappedString|WrappedStringList)[] $wraps
+	 * @param (string|WrappedString|self)[] $wraps
 	 */
-	public function __construct( string $sep, array $wraps ) {
-		$this->sep = $sep;
-		$this->wraps = $wraps;
+	public function __construct(
+		protected readonly string $sep,
+		protected readonly array $wraps,
+	) {
 	}
 
 	/**
@@ -48,7 +47,7 @@ class WrappedStringList {
 	 *
 	 * Does not modify the given array or any of the objects in it.
 	 *
-	 * @param (string|WrappedString|WrappedStringList)[] $lists
+	 * @param (string|WrappedString|self)[] $lists
 	 * @param string $outerSep Separator that the caller intends to use when joining the strings
 	 * @return string[] Compacted list to be treated as strings
 	 * (may contain WrappedString and WrappedStringList objects)
@@ -56,7 +55,7 @@ class WrappedStringList {
 	protected static function compact( array $lists, string $outerSep ): array {
 		$consolidated = [];
 		foreach ( $lists as $list ) {
-			if ( !$list instanceof WrappedStringList ) {
+			if ( !$list instanceof self ) {
 				// Probably WrappedString or regular string,
 				// Not mergable as a list, but may be merged as a string
 				// later by WrappedString::compact.
@@ -80,7 +79,7 @@ class WrappedStringList {
 	 * Join a several wrapped strings with a separator between each.
 	 *
 	 * @param string $sep
-	 * @param (string|WrappedString|WrappedStringList)[] $lists
+	 * @param (string|WrappedString|self)[] $lists
 	 */
 	public static function join( string $sep, array $lists ): string {
 		return implode( $sep, self::compact( $lists, $sep ) );
